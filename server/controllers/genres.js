@@ -1,5 +1,5 @@
 var genres_model = require("../models/genres");
-
+var train_controller = require("../train/controllers");
 //get list
 exports.get_Genres_List = (req, res) => {
   genres_model
@@ -37,4 +37,5 @@ exports.add_Genre = (req, res) => {
     .catch(err => {
       res.status(400).send("unable to save to database");
     });
+  // train_controller.add_Model("5e568da9d3bd1b33e8833ba6", req.body.name);
 };

@@ -1,9 +1,8 @@
-var movies_model = require("../models/movies");
-
+var countries_model = require("../models/countries");
 
 //get list
-exports.get_Movies_List = (req, res) => {
-  movies_model
+exports.get_Countries_List = (req, res) => {
+  countries_model
     .find((err, item) => {
       if (err) {
         console.log(err);
@@ -17,8 +16,8 @@ exports.get_Movies_List = (req, res) => {
     });
 };
 //get by _id
-exports.get_Movie_By_Id = (req, res) => {
-  movies_model
+exports.get_Country_By_Id = (req, res) => {
+  countries_model
     .findById(req.params.id)
     .then(item => {
       res.json(item);
@@ -28,8 +27,8 @@ exports.get_Movie_By_Id = (req, res) => {
     });
 };
 //add
-exports.add_Movie = (req, res) => {
-  let item = new movies_model(req.body);
+exports.add_Country = (req, res) => {
+  let item = new countries_model(req.body);
   item
     .save()
     .then(item => {
