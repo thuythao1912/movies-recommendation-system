@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-class Header extends Component {
+class Navigation extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -15,26 +15,16 @@ class Header extends Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <Link to="/" className="navbar-brand">
+        <Link to="/admin" className="navbar-brand">
           Logo
         </Link>
 
         <div className="collapse navbar-collapse" id="header">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item active">
-              <a className="nav-link" href="#">
-                Home <span className="sr-only">(current)</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <Link to="/admin" className="nav-link">
-                Admin
+              <Link to="/" className="nav-link">
+                Home
               </Link>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link disabled" href="#" aria-disabled="true">
-                Disabled
-              </a>
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0">
@@ -56,4 +46,4 @@ class Header extends Component {
     );
   }
 }
-export default Header;
+export default Navigation;

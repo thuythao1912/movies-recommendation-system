@@ -19,6 +19,11 @@ class SidebarMenu extends Component {
         this.setState({ genres: res.data });
       })
       .catch(err => console.log(err));
+    callApi("countries", "get", null)
+      .then(res => {
+        this.setState({ countries: res.data });
+      })
+      .catch(err => console.log(err));
   }
   //funtion show hide menu item
   showHide(name) {
