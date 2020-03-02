@@ -7,7 +7,7 @@ import HomePage from "./HomePage";
 class MainPage extends Component {
   render() {
     return (
-      <div style={{ minHeight: "97vh" }}>
+      <div>
         <Header />
         <div className="d-flex">
           <SidebarMenu />

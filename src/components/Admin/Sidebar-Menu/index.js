@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 class Panel extends Component {
   render() {
     return (
-      <div className="bg-dark" style={{ minHeight: "96vh" }}>
+      <div className="bg-dark" style={{ height: "100%", minHeight: "91vh" }}>
         <ul className="list-group list-group-flush">
           <li className="list-group-item p-2 text-white bg-dark">
             <NavLink

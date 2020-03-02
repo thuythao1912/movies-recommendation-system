@@ -8,7 +8,7 @@ class MovieDetails extends Component {
     this.state = { item: {}, genres: [] };
   }
   componentDidMount() {
-    callApi(`movies/${this.props.match.params.id}`, "get", null)
+    callApi(`movies/byid/${this.props.match.params.id}`, "get", null)
       .then(res => {
         this.setState({ item: res.data });
       })

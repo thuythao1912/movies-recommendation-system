@@ -8,7 +8,7 @@ import Movies from "./Movies";
 class Admin extends Component {
   render() {
     return (
-      <div style={{ minHeight: "97vh" }}>
+      <div>
         <Header />
         <div className="d-flex">
           <div className="col-sm-2 p-0">

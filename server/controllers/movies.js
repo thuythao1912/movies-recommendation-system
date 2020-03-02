@@ -1,6 +1,5 @@
 var movies_model = require("../models/movies");
 
-
 //get list
 exports.get_Movies_List = (req, res) => {
   movies_model
@@ -34,6 +33,21 @@ exports.add_Movie = (req, res) => {
     .save()
     .then(item => {
       res.status(200).json({ data: "item is added successfully", item });
+    })
+    .catch(err => {
+      res.status(400).send("unable to save to database");
+    });
+};
+//
+exports.get_Movie_By_Fields = (req, res) => {
+  movies_model
+    .findOne({
+      originalTitle: req.body.originalTitle,
+      producers: req.body.producers,
+      duration: req.body.duration
+    })
+    .then(item => {
+      res.json(item);
     })
     .catch(err => {
       res.status(400).send("unable to save to database");
