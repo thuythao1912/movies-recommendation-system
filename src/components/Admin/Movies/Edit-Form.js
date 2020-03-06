@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import callApi from "../../../utils/apiCaller";
 import { Link } from "react-router-dom";
 var selectedGenres = [];
-class AddForm extends Component {
+class EditForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,6 +32,24 @@ class AddForm extends Component {
   componentDidMount() {
     this.getDropdownCountries();
     this.getCheckboxGenres();
+    //get movie data
+    callApi(`movies/byid/${this.props.match.params.id}`, "get", null)
+      .then(res => {
+        this.setState({
+          vietnameseTitle: res.data.vietnameseTitle,
+          originalTitle: res.data.originalTitle,
+          type: res.data.type,
+          duration: res.data.duration,
+          year: res.data.year,
+          openingDay: res.data.openingDay,
+          producers: res.data.producers,
+          trailer: res.data.trailer,
+          poster: res.data.poster,
+          overview: res.data.overview,
+          country: res.data.country
+        });
+      })
+      .catch(err => console.log(err));
   }
   getDropdownCountries() {
     callApi("countries", "get", null)
@@ -42,6 +60,14 @@ class AddForm extends Component {
   }
   getCheckboxGenres() {
     let arrGenres = [];
+    let arrGenresSelected = [];
+    //get movie genres
+    callApi(`moviesgenres/movie/${this.props.match.params.id}`, "get", null)
+      .then(res => {
+        arrGenresSelected = res.data;
+      })
+      .catch(err => console.log(err));
+    //get all genres
     callApi("genres", "get", null)
       .then(res => {
         arrGenres = res.data;
@@ -49,6 +75,14 @@ class AddForm extends Component {
           item.isChecked = false;
         });
         this.setState({ genres: arrGenres });
+        //checked
+        this.state.genres.forEach(item => {
+          arrGenresSelected.forEach(data => {
+            if (data.genre._id == item._id) {
+              item.isChecked = true;
+            }
+          });
+        });
       })
       .catch(err => console.log(err));
   }
@@ -63,6 +97,7 @@ class AddForm extends Component {
       }
     });
     this.setState({ genres: genres });
+    console.log(this.state.genres);
   }
   uncheck() {
     let genres = this.state.genres;
@@ -172,7 +207,7 @@ class AddForm extends Component {
     });
     return (
       <div className="p-2">
-        <h3>THÊM PHIM MỚI</h3>
+        <h3>CẬP NHẬT THÔNG TIN PHIM</h3>
         <form onSubmit={this.onSubmit}>
           <div className="col-sm-12 border bg-white py-2 ">
             <div className="d-flex my-1">
@@ -369,4 +404,4 @@ class AddForm extends Component {
     );
   }
 }
-export default AddForm;
+export default EditForm;

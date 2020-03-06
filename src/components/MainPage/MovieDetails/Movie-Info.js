@@ -1,5 +1,20 @@
 import React, { Component } from "react";
+import callApi from "../../../utils/apiCaller";
 class MovieInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { country: "" };
+  }
+  componentWillReceiveProps() {
+    if (this.props.item.hasOwnProperty("_id")) {
+      callApi(`countries/${this.props.item.country}`, "get", null)
+        .then(res => {
+          this.setState({ country: res.data.name });
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
   render() {
     let item = this.props.item;
     let genres = this.props.genres;
@@ -37,7 +52,7 @@ class MovieInfo extends Component {
                 </tr>
                 <tr>
                   <td>Quốc gia</td>
-                  <td>{item.country}</td>
+                  <td>{this.state.country}</td>
                 </tr>
                 <tr>
                   <td>Nhà sản xuất</td>
