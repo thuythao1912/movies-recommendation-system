@@ -51,3 +51,16 @@ exports.get_Genres_By_MovieId = (req, res) => {
       }
     });
 };
+
+//delete genres by movie id
+exports.delete_Genres_By_MovieId = (req, res) => {
+  moviesGenres_model
+    .deleteMany({ movie: req.params.id }, (err, item) => {
+      if (err) {
+        res.json("Data not found");
+      } else {
+        res.json("successfully deleted");
+      }
+    })
+    .catch(err => console.log(err));
+};

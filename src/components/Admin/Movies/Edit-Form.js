@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import callApi from "../../../utils/apiCaller";
 import { Link } from "react-router-dom";
-var selectedGenres = [];
 class EditForm extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +19,8 @@ class EditForm extends Component {
       trailer: "",
       poster: "",
       checkboxGenres: [],
-      selectedGenres: []
+      selectedGenres: [],
+      _id: ""
     };
     this.getDropdownCountries = this.getDropdownCountries.bind(this);
     this.getCheckboxGenres = this.getCheckboxGenres.bind(this);
@@ -46,7 +46,8 @@ class EditForm extends Component {
           trailer: res.data.trailer,
           poster: res.data.poster,
           overview: res.data.overview,
-          country: res.data.country
+          country: res.data.country,
+          _id: res.data._id
         });
       })
       .catch(err => console.log(err));
@@ -74,12 +75,14 @@ class EditForm extends Component {
         arrGenres.forEach(item => {
           item.isChecked = false;
         });
+
         this.setState({ genres: arrGenres });
         //checked
-        this.state.genres.forEach(item => {
+        arrGenres.forEach(item => {
           arrGenresSelected.forEach(data => {
             if (data.genre._id == item._id) {
               item.isChecked = true;
+              console.log(item.name);
             }
           });
         });
@@ -97,7 +100,6 @@ class EditForm extends Component {
       }
     });
     this.setState({ genres: genres });
-    console.log(this.state.genres);
   }
   uncheck() {
     let genres = this.state.genres;
@@ -121,47 +123,50 @@ class EditForm extends Component {
       trailer: this.state.trailer,
       poster: this.state.poster
     };
-    //add movie
-    callApi("movies", "post", movie)
-      .then(async res => {
+    //update movie
+    callApi(`movies/${this.state._id}`, "put", movie)
+      .then(res => {
         if (res.data.data.includes("successfully")) {
-          //get _id of movie have been just created
-          await callApi("movies/byfields", "post", {
-            originalTitle: this.state.originalTitle,
-            producers: this.state.producers,
-            duration: this.state.duration
-          }).then(res => {
-            this.state.genres.forEach(genre => {
-              if (genre.isChecked) {
-                let moviegenre = { movie: res.data._id, genre: genre._id };
-                //add movie genres
-                callApi("moviesgenres", "post", moviegenre)
-                  .then()
-                  .catch(err => console.log(err));
-              }
-            });
-          });
-          //uncheck all checkboxes
-          this.uncheck();
-          alert("Đã thêm thành công!");
-          //set state to ""
-          this.setState({
-            originalTitle: "",
-            vietnameseTitle: "",
-            overview: "",
-            country: "",
-            year: "",
-            openingDay: "",
-            duration: "",
-            producers: "",
-            type: "",
-            trailer: "",
-            poster: ""
-          });
-        } else {
-          alert("Đã có lỗi xảy ra!");
+          alert("Đã cập nhật thành công!");
         }
       })
+      .catch(err => console.log(err));
+    //delete genres by movie id
+    callApi(`moviesgenres/movie/${this.state._id}`, "delete", null).then(
+      res => {
+        this.state.genres.forEach(genre => {
+          if (genre.isChecked) {
+            let moviegenre = { movie: this.state._id, genre: genre._id };
+            //add movie genres
+            callApi("moviesgenres", "post", moviegenre)
+              .then()
+              .catch(err => console.log(err));
+          }
+        });
+      }
+    );
+    //update train data
+    let model = {
+      isTinhCam: false,
+      isVienTuong: false,
+      isHanhDong: false,
+      isHaiHuoc: false,
+      isCoTrang: false,
+      isHoatHinh: false,
+      isTaiLieu: false,
+      isHinhSu: false,
+      isKinhDi: false,
+      movieId: this.state._id,
+      movieName: this.state.vietnameseTitle,
+      country: this.state.country,
+      type: this.state.type,
+      year: this.state.year
+    };
+    for (let i = 0; i < this.state.genres.length; i++) {
+      model[Object.keys(model)[i]] = this.state.genres[i].isChecked;
+    }
+    callApi(`train/bymovie/${this.state._id}`, "put", model)
+      .then(res => console.log(res.data))
       .catch(err => console.log(err));
   }
   render() {
@@ -263,7 +268,7 @@ class EditForm extends Component {
                     onChange={this.handleInputChange}
                     value={this.state.country}
                   >
-                    <option value="-1">Chọn quốc gia</option>
+                    <option value={null}>Chọn quốc gia</option>
                     {elCountries}
                   </select>
                   <span className="text-danger">&nbsp;(*)</span>

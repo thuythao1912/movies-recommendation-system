@@ -8,7 +8,7 @@ const movie = new Schema(
     overview: { type: String },
     country: { type: String },
     year: { type: String },
-    openingDay: { type: Date },
+    openingDay: { type: String },
     duration: { type: String },
     producers: { type: String },
     type: { type: String },

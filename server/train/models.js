@@ -8,15 +8,15 @@ const model = new Schema(
     country: { type: String },
     type: { type: String },
     year: { type: String },
-    isTinhCam: { type: Int32 },
-    isVienTuong: { type: Int32 },
-    isHanhDong: { type: Int32 },
-    isHaiHuoc: { type: Int32 },
-    isCoTrang: { type: Int32 },
-    isHoatHinh: { type: Int32 },
-    isTaiLieu: { type: Int32 },
-    isHinhSu: { type: Int32 },
-    isKinhDi: { type: Int32 }
+    isTinhCam: { type: Boolean },
+    isVienTuong: { type: Boolean },
+    isHanhDong: { type: Boolean },
+    isHaiHuoc: { type: Boolean },
+    isCoTrang: { type: Boolean },
+    isHoatHinh: { type: Boolean },
+    isTaiLieu: { type: Boolean },
+    isHinhSu: { type: Boolean },
+    isKinhDi: { type: Boolean }
   },
   { timestamps: true }
 );

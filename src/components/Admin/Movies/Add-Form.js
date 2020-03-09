@@ -105,6 +105,29 @@ class AddForm extends Component {
                   .catch(err => console.log(err));
               }
             });
+            //add data to train
+            let model = {
+              isTinhCam: false,
+              isVienTuong: false,
+              isHanhDong: false,
+              isHaiHuoc: false,
+              isCoTrang: false,
+              isHoatHinh: false,
+              isTaiLieu: false,
+              isHinhSu: false,
+              isKinhDi: false,
+              movieId: res.data._id,
+              movieName: this.state.vietnameseTitle,
+              country: this.state.country,
+              type: this.state.type,
+              year: this.state.year
+            };
+            for (let i = 0; i < this.state.genres.length; i++) {
+              model[Object.keys(model)[i]] = this.state.genres[i].isChecked;
+            }
+            callApi("train", "post", model)
+              .then(res => console.log(res.data))
+              .catch(err => console.log(err));
           });
           //uncheck all checkboxes
           this.uncheck();
