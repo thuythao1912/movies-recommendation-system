@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import callApi from "../../../utils/apiCaller";
-import ModalDetails from "./Modal-Details";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faInfoCircle,
@@ -12,20 +11,12 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = { items: [], isShowModal: false, itemSelected: null };
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.deleteMovie = this.deleteMovie.bind(this);
-    this.getMovies = this.getMovies.bind(this);
+    this.getUsers = this.getUsers.bind(this);
   }
   componentDidMount() {
-    this.getMovies();
+    this.getUsers();
   }
-  openModal(item) {
-    this.setState({ isShowModal: true, itemSelected: item });
-  }
-  closeModal() {
-    this.setState({ isShowModal: false });
-  }
+
   deleteMovie(movie, title) {
     if (window.confirm(`Bạn muốn xóa phim: ${title}`)) {
       //check if movies genres are existed
@@ -62,8 +53,8 @@ class List extends Component {
       });
     }
   }
-  getMovies() {
-    callApi("movies", "get", null)
+  getUsers() {
+    callApi("users", "get", null)
       .then(res => {
         this.setState({ items: res.data });
       })
@@ -76,28 +67,12 @@ class List extends Component {
       return (
         <tr key={index}>
           <td>{index + 1}</td>
-          <td>{item.vietnameseTitle}</td>
-          <td>{item.originalTitle}</td>
+          <td>{item.username}</td>
+          <td>{item.email}</td>
           <td>
-            {item.type == "PhimBo"
-              ? "Phim bộ"
-              : item.type == "PhimLe"
-              ? "Phim lẻ"
-              : ""}
-          </td>
-          <td>{item.year}</td>
-          <td>{item.producers}</td>
-          <td>
-            <button className="btn btn-link">
-              <FontAwesomeIcon
-                icon={faInfoCircle}
-                className="text-info"
-                onClick={() => this.openModal(item)}
-              />
-            </button>
-            <Link to={`/admin/movies/edit/${item._id}`}>
+            {/* <Link to={`/admin/users/edit/${item._id}`}>
               <FontAwesomeIcon icon={faEdit} className="text-info" />
-            </Link>
+            </Link> */}
             <button
               className="btn btn-link"
               onClick={() => this.deleteMovie(item._id, item.vietnameseTitle)}
@@ -108,40 +83,25 @@ class List extends Component {
         </tr>
       );
     });
-    //create modal
-    let elModal = "";
-    if (this.state.isShowModal) {
-      elModal = (
-        <ModalDetails
-          item={this.state.itemSelected}
-          isShowModal={this.state.isShowModal}
-          onClickClose={this.closeModal}
-        />
-      );
-    }
     return (
       <div className="p-2">
-        <h3 className="text-center">DANH SÁCH PHIM</h3>
-        <Link to="/admin/movies/add" className="text-decoration-none ">
-          <button className="btn btn-info btn-sm">Thêm mới</button>
-        </Link>
+        <h3 className="text-center">DANH SÁCH NGƯỜI DÙNG</h3>
+          {/* <Link to="/admin/movies/add" className="text-decoration-none ">
+            <button className="btn btn-info btn-sm">Thêm mới</button>
+          </Link> */}
         <div className="bg-white">
           <table className="table table-sm my-2 table-striped table-bordered">
             <thead>
               <tr>
-                <th width="3%">STT</th>
-                <th width="22%">Tên phim</th>
-                <th width="20%">Tên gốc</th>
-                <th width="10%">Loại</th>
-                <th width="10%">Năm</th>
-                <th width="20%">Đạo diễn</th>
-                <th width="15%">Thao tác</th>
+                <th width="10%">STT</th>
+                <th width="30%">Tên người dùng</th>
+                <th width="40%">Email</th>
+                <th width="20%">Thao tác</th>
               </tr>
             </thead>
             <tbody>{elItems}</tbody>
           </table>
         </div>
-        {elModal}
       </div>
     );
   }

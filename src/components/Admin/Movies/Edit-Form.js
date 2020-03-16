@@ -285,8 +285,8 @@ class EditForm extends Component {
                     value={this.state.type}
                   >
                     <option value="-1">Chọn loại phim</option>
-                    <option value="Phim lẻ">Phim lẻ</option>
-                    <option value="Phim bộ">Phim bộ</option>
+                    <option value="PhimLe">Phim lẻ</option>
+                    <option value="PhimBo">Phim bộ</option>
                   </select>
                   <span className="text-danger">&nbsp;(*)</span>
                 </div>

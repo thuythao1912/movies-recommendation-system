@@ -37,5 +37,4 @@ exports.add_Genre = (req, res) => {
     .catch(err => {
       res.status(400).send("unable to save to database");
     });
-  // train_controller.add_Model("5e568da9d3bd1b33e8833ba6", req.body.name);
 };

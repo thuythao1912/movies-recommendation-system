@@ -22,7 +22,7 @@ for (let i = 0; i < data.length; i++) {
   matrix.push(similarities / features); //tương quan giống nhau giữa data[movie] và data[i]
 }
 //kq matrix
-// console.log(matrix);
+console.log(matrix);
 
 //sort
 

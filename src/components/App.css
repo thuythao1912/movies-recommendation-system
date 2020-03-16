@@ -9,7 +9,7 @@
 }
 .thumbnail-movie-sec {
   width: 100%;
-  height: 150px;
+  height: 100px;
   background-color: #0c5460;
   background-image: none;
   background-repeat: no-repeat;
@@ -21,5 +21,35 @@
   box-shadow: 0px 2px 5px #cfcfcf;
 }
 .poster {
-  max-height: 370px;
+  width: 100%;
+  height: 370px;
+  background-color: #9b9b9b;
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+#homepageHeader {
+  box-shadow: 0px 2px 5px #cfcfcf;
+}
+.sidebar-menu {
+  border-right: solid 3px #fd9002;
+  border-bottom: solid 3px #fd9002;
+}
+.sidebar-menu-title {
+  font-weight: bold;
+  border-bottom: solid 1px #fff;
+  background-color: #fd9002;
+  color: #ffffff;
+}
+.sidebar-menu-title:hover {
+  background-color: #f1112f;
+  cursor: pointer;
+}
+.sidebar-item {
+  border-left: solid 3px #f1112f;
+}
+.header-item:hover {
+  color: #f1112f;
+  font-weight: bold;
 }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import MenuItem from "./menu-items";
+import { NavLink } from "react-router-dom";
 import callApi from "../../../utils/apiCaller";
 class SidebarMenu extends Component {
   constructor(props) {
@@ -33,11 +34,17 @@ class SidebarMenu extends Component {
       this.setState({ isDisplayedCountries: !this.state.isDisplayedCountries });
     }
   }
+
   render() {
     return (
-      <div className="bg-dark col-sm-1 text-white">
+      <div className="bg-white sidebar-menu">
         <div>
-          <div onClick={() => this.showHide("genres")}>Thể loại</div>
+          <div
+            onClick={() => this.showHide("genres")}
+            className="sidebar-menu-title p-1 text-center"
+          >
+            Thể loại
+          </div>
           <MenuItem
             data={this.state.genres}
             menuName="genres"
@@ -45,19 +52,32 @@ class SidebarMenu extends Component {
           />
         </div>
         <div>
-          <div onClick={() => this.showHide("countries")}>Quốc gia</div>
+          <div
+            onClick={() => this.showHide("countries")}
+            className="sidebar-menu-title p-1 text-center"
+          >
+            Quốc gia
+          </div>
           <MenuItem
             data={this.state.countries}
-            menuName="countries"
+            menuName="country"
             isDisplayed={this.state.isDisplayedCountries}
           />
         </div>
-        <div>
-          <div>Phim bộ</div>
+        {/* <div>
+          <div className="sidebar-menu-title p-1 text-center">
+            <NavLink
+              to={`/field/type/PhimBo`}
+              className="text-decoration-none text-dark "
+              activeClassName="bg-info"
+            >
+              Phim bộ
+            </NavLink>
+          </div>
         </div>
         <div>
-          <div>Phim lẻ</div>
-        </div>
+          <div className="sidebar-menu-title p-1 text-center">Phim lẻ</div>
+        </div> */}
       </div>
     );
   }

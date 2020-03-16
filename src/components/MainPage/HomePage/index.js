@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import HotMovies from "./HotMovies";
-import NewMovieCard from "./New-Movie-Card";
+
 class HomePage extends Component {
   render() {
     return (
       <div className="d-flex">
-        <div className="col-sm-9">
+        <div className="col-sm-12">
+          <div className="d-flex my-2">
+            <h6 className="mr-auto">Phim đề cử</h6>
+          </div>
           <HotMovies />
-        </div>
-        <div className="col-sm-3">
-          <h6>Phim mới</h6>
-          <NewMovieCard />
         </div>
       </div>
     );

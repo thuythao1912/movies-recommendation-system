@@ -15,13 +15,12 @@ class HotMovies extends Component {
   }
   render() {
     var items = this.state.items;
-    var elItem = items.map((item, index) => {
+    var elItems = items.map((item, index) => {
       return <MovieCard item={item} key={index} />;
     });
     return (
       <div>
-        <h6>Phim đề cử</h6>
-        <div className="d-flex flex-wrap">{elItem}</div>
+        <div className="d-flex flex-wrap">{elItems}</div>
       </div>
     );
   }

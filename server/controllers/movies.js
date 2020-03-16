@@ -3,7 +3,7 @@ var moviesgenres_model = require("../models/movies-genres");
 //get list
 exports.get_Movies_List = (req, res) => {
   movies_model
-    .find((err, item) => {
+    .find({}, null, { sort: { createdAt: -1 } }, (err, item) => {
       if (err) {
         console.log(err);
         res.status(500).send(`Something went wrong...`);
@@ -55,21 +55,11 @@ exports.get_Movie_By_Fields = (req, res) => {
 };
 //delete by id
 exports.delete_Movie_By_Id = (req, res) => {
-  moviesgenres_model.findOne({ movie: req.params.id }, (err, item) => {
+  movies_model.findByIdAndDelete(req.params.id, (err, movie) => {
     if (err) {
       res.json(err);
     } else {
-      if (!item) {
-        movies_model.findByIdAndDelete(req.params.id, (err, movie) => {
-          if (err) {
-            res.json(err);
-          } else {
-            res.json("successfully removed");
-          }
-        });
-      } else {
-        res.json("fk");
-      }
+      res.json("successfully removed");
     }
   });
 };
@@ -123,4 +113,61 @@ exports.update_Movie_By_Id = (req, res) => {
     .catch(err => {
       console.log(err);
     });
+};
+//get movies by name
+exports.get_Movies_By_Title = (req, res) => {
+  movies_model
+    .find(
+      {
+        $or: [
+          { originalTitle: { $regex: req.body.title, $options: "i" } },
+          { vietnameseTitle: { $regex: req.body.title, $options: "i" } }
+        ]
+      },
+      (err, items) => {
+        if (err) console.log(err);
+        else {
+          res.json(items);
+        }
+      }
+    )
+    .catch(err => console.log(err));
+};
+//get list by field
+exports.get_List_By_Field = (req, res) => {
+  let field = req.body.field;
+  let value = req.body.value;
+  switch (field) {
+    case "country":
+      movies_model
+        .find({ country: value }, (err, items) => {
+          if (err) console.log(err);
+          else {
+            res.json(items);
+          }
+        })
+        .catch(err => console.log(err));
+      break;
+    case "type":
+      movies_model
+        .find({ type: value }, (err, items) => {
+          if (err) console.log(err);
+          else {
+            res.json(items);
+          }
+        })
+        .catch(err => console.log(err));
+      break;
+    case "genres":
+      moviesgenres_model
+        .find({ genre: value })
+        .populate("movie")
+        .exec((err, item) => {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json(item);
+          }
+        });
+  }
 };

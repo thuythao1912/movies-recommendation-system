@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 class MovieCard extends Component {
   constructor(props) {
     super(props);
+    if (props.item.poster == "") {
+      this.props.item.poster = "/img/404.png";
+    }
   }
   render() {
     let item = this.props.item;
     return (
-      <div className="my-1 mx-1 movie-card border" style={{ width: "24%" }}>
+      <div className="m-1 movie-card border" style={{ width: "19%" }}>
         <div
           className="thumbnail-movie"
           style={{

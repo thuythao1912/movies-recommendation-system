@@ -11,8 +11,8 @@ let usersRoutes = require("./routes/users");
 let moviesRoutes = require("./routes/movies");
 let genresRoutes = require("./routes/genres");
 let moviesGenresRoutes = require("./routes/movies-genres");
-let althgorithmsRoutes = require("./routes/algorithms");
 let countriesRoutes = require("./routes/countries");
+let ratingRoutes = require("./routes/rating");
 //train
 let trainRoutes = require("./train/routes");
 //setup server
@@ -41,6 +41,6 @@ app.use("/users", usersRoutes);
 app.use("/movies", moviesRoutes);
 app.use("/genres", genresRoutes);
 app.use("/moviesgenres", moviesGenresRoutes);
-app.use("/algorithms", althgorithmsRoutes);
 app.use("/countries", countriesRoutes);
 app.use("/train", trainRoutes);
+app.use("/rating", ratingRoutes);

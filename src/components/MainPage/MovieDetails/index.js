@@ -5,29 +5,63 @@ import callApi from "../../../utils/apiCaller";
 class MovieDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = { item: {}, genres: [] };
+    this.state = {
+      item: {},
+      genres: [],
+      moviesrecommended: [],
+      rating: ""
+    };
+    this.getData = this.getData.bind(this);
   }
-  componentDidMount() {
-    callApi(`movies/byid/${this.props.match.params.id}`, "get", null)
+  getData(movieId) {
+    callApi(`movies/byid/${movieId}`, "get", null)
       .then(res => {
         this.setState({ item: res.data });
       })
       .catch(err => console.log(err));
     //get movie genres
-    callApi(`moviesgenres/movie/${this.props.match.params.id}`, "get", null)
+    callApi(`moviesgenres/movie/${movieId}`, "get", null)
       .then(res => {
         this.setState({ genres: res.data });
       })
       .catch(err => console.log(err));
+    //get movies recommended
+    let id = { id: movieId };
+    callApi("train/recommend", "post", id)
+      .then(res => {
+        this.setState({ moviesrecommended: res.data });
+      })
+      .catch(err => console.log(err));
+    //get movie rating
+    callApi(`rating/bymovie/${movieId}`, "get", null)
+      .then(res => {
+        this.setState({ rating: res.data });
+      })
+      .catch(err => console.log(err));
   }
+
+  componentDidMount() {
+    console.log(this.props.match.params.id);
+    this.getData(this.props.match.params.id);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.id !== this.props.match.params.id) {
+      this.getData(nextProps.match.params.id);
+    }
+  }
+
   render() {
     return (
       <div className="d-flex">
-        <div className="col-sm-8 p-0">
-          <MovieInfo item={this.state.item} genres={this.state.genres} />
+        <div className="col-sm-9 p-0">
+          <MovieInfo
+            item={this.state.item}
+            genres={this.state.genres}
+            rating={this.state.rating}
+          />
         </div>
-        <div className="col-sm-4">
-          <MovieRecommendation />
+        <div className="col-sm-3">
+          <MovieRecommendation items={this.state.moviesrecommended} />
         </div>
       </div>
     );
