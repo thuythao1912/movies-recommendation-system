@@ -30,7 +30,7 @@ class SignIn extends Component {
   render() {
     if (this.state.redirect) {
       alert("Đăng nhập thành công!");
-      console.log(this.props.history.goBack());
+      this.props.history.goBack();
       // return <Redirect to="/" />;
     }
     return (
@@ -39,7 +39,7 @@ class SignIn extends Component {
         style={{ height: "100%", minHeight: "100vh" }}
       >
         <div
-          className="col-sm-5 py-5"
+          className="col-lg-5 col-md-8 py-5"
           style={{ margin: "auto", minHeight: "70vh" }}
         >
           <h3 className="text-center text-white">ĐĂNG NHẬP</h3>
@@ -66,7 +66,7 @@ class SignIn extends Component {
               </div>
               <div className="d-flex col-sm-12 mb-3">
                 <input
-                  type="text"
+                  type="password"
                   className="form-control form-control-md"
                   placeholder="Nhập mật khẩu"
                   required
@@ -82,7 +82,7 @@ class SignIn extends Component {
               </div>
               <div className="my-3 text-center">
                 <button className="btn btn-success mx-1" type="submit">
-                  Lưu
+                  Đăng nhập
                 </button>
                 <Link to="/">
                   <button className="btn btn-danger mx-1">Trở về</button>

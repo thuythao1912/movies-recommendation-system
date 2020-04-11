@@ -57,7 +57,13 @@ class ModalDetails extends Component {
               </tr>
               <tr>
                 <td>Loại</td>
-                <td>{item.type}</td>
+                <td>
+                  {item.type == "PhimBo"
+                    ? "Phim bộ"
+                    : item.type == "PhimLe"
+                    ? "Phim lẻ"
+                    : ""}
+                </td>
               </tr>
 
               <tr>

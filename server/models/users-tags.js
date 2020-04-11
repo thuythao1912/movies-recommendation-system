@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const rating = new Schema(
+const userTag = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "user" },
     movie: { type: Schema.Types.ObjectId, ref: "movie" },
-    rating: { type: Number },
-    comment: { type: String }
+    tag: { type: String }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("rating", rating);
+module.exports = mongoose.model("usertag", userTag);

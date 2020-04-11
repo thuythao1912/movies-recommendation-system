@@ -99,6 +99,110 @@ exports.update_Model = (req, res) => {
     });
 };
 
+// //recommend movie
+// exports.moviesRecommended = (req, res) => {
+//   model
+//     .find((err, items) => {
+//       if (err) {
+//         console.log(err);
+//         res.status(500).send(`Something went wrong...`);
+//       } else {
+//         let data = items; // list of movies in db
+//         let movie = req.body.id; //input movie
+//         let movieIndex = 0;
+//         //find input movie index
+//         for (let i = 0; i < data.length; i++) {
+//           if (data[i].movieId == movie) {
+//             movieIndex = i;
+//             break;
+//           }
+//         }
+//         let matrix = []; // matrix storing result
+//         let featuresList = Object.keys(data[0].toObject());
+//         for (let i = 0; i < data.length; i++) {
+//           if (data[movieIndex].movieId == data[i].movieId) continue;
+//           var similarities = 0; // số lượng features giống nhau
+//           var movieIndexFeatures = 0;
+//           var movieIFeatures = 0;
+//           for (let j = 1; j < featuresList.length - 7; j++) {
+//             //so sánh từng features của data[movieIndex] với data[i]
+//             if (data[movieIndex][featuresList[j]] !== false)
+//               movieIndexFeatures++;
+//             if (data[i][featuresList[j]] !== false) movieIFeatures++;
+//             if (
+//               data[movieIndex][featuresList[j]] == data[i][featuresList[j]] &&
+//               (data[movieIndex][featuresList[j]] != false ||
+//                 data[i][featuresList[j]] != false)
+//             ) {
+//               similarities++;
+//             }
+//           }
+
+//           console.log(movieIndexFeatures, movieIFeatures, similarities);
+
+//           matrix.push(
+//             similarities / (movieIndexFeatures + movieIFeatures - similarities)
+//           ); //tương quan giống nhau giữa data[movieIndex] và data[i]
+//         }
+//         //kq matrix
+//         console.log(matrix);
+
+//         //sort
+//         var valueArray = [];
+//         var indexArr = [];
+
+//         //copy matrix to valueArray
+//         valueArray = [...matrix];
+
+//         // push index/name/id/... into array
+//         for (let i = 0; i < data.length; i++) {
+//           if (data[movieIndex].movieId == data[i].movieId) continue;
+//           indexArr.push(data[i].movieId);
+//         }
+
+//         //sort valueArray
+//         for (let i = 0; i < valueArray.length; i++) {
+//           for (let j = i + 1; j < valueArray.length; j++) {
+//             if (valueArray[j] > valueArray[i]) {
+//               //swap value
+//               let tempValue = valueArray[j];
+//               valueArray[j] = valueArray[i];
+//               valueArray[i] = tempValue;
+
+//               //swap index
+//               let tempIndex = indexArr[j];
+//               indexArr[j] = indexArr[i];
+//               indexArr[i] = tempIndex;
+//             }
+//           }
+//         }
+//         console.log(valueArray);
+//         // console.log(indexArr);
+//         if (indexArr.length >= 5) {
+//           res.json(indexArr.slice(0, 5));
+//         } else {
+//           res.json(indexArr);
+//         }
+//       }
+//     })
+//     .catch(err => {
+//       res.status(400).send(`Unable to get to database...`);
+//     });
+// };
+
+//delete model
+exports.delete_Model = (req, res) => {
+  model
+    .deleteMany({ movieId: req.params.id }, (err, item) => {
+      if (err) {
+        res.json("Data not found");
+      } else {
+        res.json("successfully deleted");
+      }
+    })
+    .catch(err => console.log(err));
+};
+
 //recommend movie
 exports.moviesRecommended = (req, res) => {
   model
@@ -110,6 +214,7 @@ exports.moviesRecommended = (req, res) => {
         let data = items; // list of movies in db
         let movie = req.body.id; //input movie
         let movieIndex = 0;
+        let matrix = []; // matrix storing result
         //find input movie index
         for (let i = 0; i < data.length; i++) {
           if (data[i].movieId == movie) {
@@ -117,36 +222,58 @@ exports.moviesRecommended = (req, res) => {
             break;
           }
         }
-        let matrix = []; // matrix storing result
+
         let featuresList = Object.keys(data[0].toObject());
+        var movieIndexFeatures = 0;
+        //count movie index features
+        data[movieIndex].type != "" ? movieIndexFeatures++ : "";
+        data[movieIndex].country != "" ? movieIndexFeatures++ : "";
+        movieIndexFeatures += data[movieIndex].genres.length;
         for (let i = 0; i < data.length; i++) {
           if (data[movieIndex].movieId == data[i].movieId) continue;
           var similarities = 0; // số lượng features giống nhau
-          var movieIndexFeatures = 0;
           var movieIFeatures = 0;
-          for (let j = 1; j < featuresList.length - 7; j++) {
-            //so sánh từng features của data[movieIndex] với data[i]
-            if (data[movieIndex][featuresList[j]] !== false)
-              movieIndexFeatures++;
-            if (data[i][featuresList[j]] !== false) movieIFeatures++;
-            if (
-              data[movieIndex][featuresList[j]] == data[i][featuresList[j]] &&
-              (data[movieIndex][featuresList[j]] != false ||
-                data[i][featuresList[j]] != false)
-            ) {
+          //count movie i features
+          data[i].type != "" ? movieIFeatures++ : "";
+          data[i].country != "" ? movieIFeatures++ : "";
+          movieIFeatures += data[i].genres.length;
+          //so sanh country
+          if (
+            data[movieIndex].country == data[i].country &&
+            data[movieIndex].country != "" &&
+            data[i].country != ""
+          ) {
+            similarities++;
+            console.log(data[movieIndex].country, data[i].country);
+          }
+          //so sanh type
+          if (
+            data[movieIndex].type == data[i].type &&
+            data[movieIndex].type != "" &&
+            data[i].type != ""
+          ) {
+            similarities++;
+            console.log(data[movieIndex].type, data[i].type);
+          }
+          //so sanh genre
+          data[movieIndex].genres.forEach(item => {
+            let result = data[i].genres.indexOf(item);
+            if (result != -1) {
               similarities++;
             }
-          }
-
-          console.log(movieIndexFeatures, movieIFeatures, similarities);
-
+          });
+          console.log(
+            // data[movieIndex].movieName,
+            // data[i].movieName,
+            // similarities
+            movieIndexFeatures,
+            movieIFeatures
+          );
           matrix.push(
             similarities / (movieIndexFeatures + movieIFeatures - similarities)
           ); //tương quan giống nhau giữa data[movieIndex] và data[i]
         }
-        //kq matrix
-        console.log(matrix);
-
+        // console.log(matrix);
         //sort
         var valueArray = [];
         var indexArr = [];
@@ -188,17 +315,4 @@ exports.moviesRecommended = (req, res) => {
     .catch(err => {
       res.status(400).send(`Unable to get to database...`);
     });
-};
-
-//delete model
-exports.delete_Model = (req, res) => {
-  model
-    .deleteMany({ movieId: req.params.id }, (err, item) => {
-      if (err) {
-        res.json("Data not found");
-      } else {
-        res.json("successfully deleted");
-      }
-    })
-    .catch(err => console.log(err));
 };

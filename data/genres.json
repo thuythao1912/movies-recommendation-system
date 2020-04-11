@@ -1,0 +1,9 @@
+{"_id":{"$oid":"5e56a2a0487ace2b5842a0d1"},"name":"Tình cảm","createdAt":{"$date":{"$numberLong":"1582736032525"}},"updatedAt":{"$date":{"$numberLong":"1582736032525"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e56a2a8487ace2b5842a0d2"},"name":"Viễn tưởng","createdAt":{"$date":{"$numberLong":"1582736040947"}},"updatedAt":{"$date":{"$numberLong":"1582736040947"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57f10d91303e18fc3f7485"},"name":"Hành động","createdAt":{"$date":{"$numberLong":"1582821645799"}},"updatedAt":{"$date":{"$numberLong":"1582821645799"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57f11a91303e18fc3f7486"},"name":"Hài hước","createdAt":{"$date":{"$numberLong":"1582821658316"}},"updatedAt":{"$date":{"$numberLong":"1582821658316"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57f12191303e18fc3f7487"},"name":"Cổ trang","createdAt":{"$date":{"$numberLong":"1582821665027"}},"updatedAt":{"$date":{"$numberLong":"1582821665027"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57f13291303e18fc3f7488"},"name":"Hoạt hình","createdAt":{"$date":{"$numberLong":"1582821682230"}},"updatedAt":{"$date":{"$numberLong":"1582821682230"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57f13e91303e18fc3f7489"},"name":"Tài liệu","createdAt":{"$date":{"$numberLong":"1582821694304"}},"updatedAt":{"$date":{"$numberLong":"1582821694304"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57f14891303e18fc3f748a"},"name":"Hình sự","createdAt":{"$date":{"$numberLong":"1582821704946"}},"updatedAt":{"$date":{"$numberLong":"1582821704946"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e57fa0adafb8f3c489adb59"},"name":"Kinh dị","createdAt":{"$date":{"$numberLong":"1582823946969"}},"updatedAt":{"$date":{"$numberLong":"1582823946969"}},"__v":{"$numberInt":"0"}}

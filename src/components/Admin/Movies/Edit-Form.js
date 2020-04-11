@@ -86,8 +86,10 @@ class EditForm extends Component {
             }
           });
         });
+        this.setState({ genres: arrGenres });
       })
       .catch(err => console.log(err));
+    console.log("genres done");
   }
   handleInputChange(e) {
     this.setState({ [e.target.name]: e.target.value });

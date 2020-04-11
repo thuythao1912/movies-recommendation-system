@@ -2,27 +2,54 @@ var movies_model = require("../models/movies");
 var moviesgenres_model = require("../models/movies-genres");
 //get list
 exports.get_Movies_List = (req, res) => {
-  movies_model
-    .find({}, null, { sort: { createdAt: -1 } }, (err, item) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send(`Something went wrong...`);
-      } else {
-        res.json(item);
-      }
-    })
-    .catch(err => {
-      res.status(400).send(`Unable to get to database...`);
-    });
+  let page = req.query.page;
+  let limit = Number(req.query.limit);
+  if (page != undefined && limit != undefined) {
+    let documentStart = (page - 1) * limit;
+    movies_model
+      .find(
+        {},
+        null,
+        {
+          limit: limit,
+          skip: documentStart,
+          sort: { createdAt: -1 },
+        },
+        (err, item) => {
+          if (err) {
+            console.log(err);
+            res.status(500).send(`Something went wrong...`);
+          } else {
+            res.json(item);
+          }
+        }
+      )
+      .catch((err) => {
+        res.status(400).send(`Unable to get to database...`);
+      });
+  } else {
+    movies_model
+      .find({}, null, { sort: { createdAt: -1 } }, (err, item) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send(`Something went wrong...`);
+        } else {
+          res.json(item);
+        }
+      })
+      .catch((err) => {
+        res.status(400).send(`Unable to get to database...`);
+      });
+  }
 };
 //get by _id
 exports.get_Movie_By_Id = (req, res) => {
   movies_model
     .findById(req.params.id)
-    .then(item => {
+    .then((item) => {
       res.json(item);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400).send(`Unable to get to database...`);
     });
 };
@@ -31,10 +58,10 @@ exports.add_Movie = (req, res) => {
   let item = new movies_model(req.body);
   item
     .save()
-    .then(item => {
+    .then((item) => {
       res.status(200).json({ data: "item is added successfully", item });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400).send("unable to save to database");
     });
 };
@@ -44,12 +71,12 @@ exports.get_Movie_By_Fields = (req, res) => {
     .findOne({
       originalTitle: req.body.originalTitle,
       producers: req.body.producers,
-      duration: req.body.duration
+      duration: req.body.duration,
     })
-    .then(item => {
+    .then((item) => {
       res.json(item);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400).send("unable to save to database");
     });
 };
@@ -105,12 +132,12 @@ exports.update_Movie_By_Id = (req, res) => {
         }
         item.updatedAt = new Date();
         item.__v += 1;
-        item.save().then(itemUpdated => {
+        item.save().then((itemUpdated) => {
           res.status(200).json({ data: "updated successfully", itemUpdated });
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -121,8 +148,8 @@ exports.get_Movies_By_Title = (req, res) => {
       {
         $or: [
           { originalTitle: { $regex: req.body.title, $options: "i" } },
-          { vietnameseTitle: { $regex: req.body.title, $options: "i" } }
-        ]
+          { vietnameseTitle: { $regex: req.body.title, $options: "i" } },
+        ],
       },
       (err, items) => {
         if (err) console.log(err);
@@ -131,7 +158,7 @@ exports.get_Movies_By_Title = (req, res) => {
         }
       }
     )
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 //get list by field
 exports.get_List_By_Field = (req, res) => {
@@ -146,7 +173,7 @@ exports.get_List_By_Field = (req, res) => {
             res.json(items);
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
       break;
     case "type":
       movies_model
@@ -156,7 +183,7 @@ exports.get_List_By_Field = (req, res) => {
             res.json(items);
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
       break;
     case "genres":
       moviesgenres_model
@@ -170,4 +197,36 @@ exports.get_List_By_Field = (req, res) => {
           }
         });
   }
+};
+
+exports.getMovieByType = (req, res) => {
+  let type = req.query.type;
+  res.json(type);
+};
+
+exports.uploadFile = (req, res) => {
+  //upload
+  const path = require("path");
+  const multer = require("multer");
+
+  const storage = multer.diskStorage({
+    destination: "./public/uploads/",
+    filename: function (req, file, cb) {
+      cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+    },
+  });
+
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 },
+  }).single("myImage");
+
+  upload(req, res, function (err) {
+    console.log("Request ---", req.body);
+    console.log("Request file ---", req.file); //Here you get file.
+    /*Now do where ever you want to do*/
+    if (!err) {
+      return res.send(200).end();
+    }
+  });
 };

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 class MovieCard extends Component {
   constructor(props) {
     super(props);
-    if (props.item.poster == "") {
+    if (this.props.item.poster === "") {
       this.props.item.poster = "/img/404.png";
     }
   }
@@ -14,7 +14,7 @@ class MovieCard extends Component {
         <div
           className="thumbnail-movie"
           style={{
-            backgroundImage: `url(${item.poster})`
+            backgroundImage: `url(${item.poster})`,
           }}
         />
         <div className="p-2">

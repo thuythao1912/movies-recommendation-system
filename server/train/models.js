@@ -7,16 +7,17 @@ const model = new Schema(
     movieName: { type: String },
     country: { type: String },
     type: { type: String },
-    year: { type: String },
-    isTinhCam: { type: Boolean },
-    isVienTuong: { type: Boolean },
-    isHanhDong: { type: Boolean },
-    isHaiHuoc: { type: Boolean },
-    isCoTrang: { type: Boolean },
-    isHoatHinh: { type: Boolean },
-    isTaiLieu: { type: Boolean },
-    isHinhSu: { type: Boolean },
-    isKinhDi: { type: Boolean }
+    genres: { type: Array }
+    // year: { type: String },
+    // isTinhCam: { type: Boolean },
+    // isVienTuong: { type: Boolean },
+    // isHanhDong: { type: Boolean },
+    // isHaiHuoc: { type: Boolean },
+    // isCoTrang: { type: Boolean },
+    // isHoatHinh: { type: Boolean },
+    // isTaiLieu: { type: Boolean },
+    // isHinhSu: { type: Boolean },
+    // isKinhDi: { type: Boolean }
   },
   { timestamps: true }
 );

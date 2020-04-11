@@ -11,4 +11,6 @@ router.delete("/:id", movies_controller.delete_Movie_By_Id);
 router.put("/:id", movies_controller.update_Movie_By_Id);
 router.post("/bytitle", movies_controller.get_Movies_By_Title);
 router.post("/byfieldname", movies_controller.get_List_By_Field);
+// router.get("/abc", movies_controller.getMovieByType); //http://localhost:4000/movies/abc?type=a
+// router.post("/upload", movies_controller.uploadFile);
 module.exports = router;

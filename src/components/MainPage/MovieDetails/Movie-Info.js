@@ -6,7 +6,13 @@ import callApi from "../../../utils/apiCaller";
 class MovieInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { country: "", isShowModal: false, item: {}, render: false };
+    this.state = {
+      country: "",
+      isShowModal: false,
+      item: {},
+      render: false,
+      user: localStorage.getItem("user")
+    };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
@@ -24,7 +30,11 @@ class MovieInfo extends Component {
   }
 
   openModal(item) {
-    this.setState({ isShowModal: true, item: item });
+    if (this.state.user) {
+      this.setState({ isShowModal: true, item: item });
+    } else {
+      alert("Vui lòng đăng nhập để đánh giá!");
+    }
   }
   closeModal() {
     this.setState({ isShowModal: false });
@@ -120,20 +130,24 @@ class MovieInfo extends Component {
               </table>
             </div>
           </div>
-          <div className="col-sm-12 my-2">
-            <h6>Nội dung phim</h6>
-            <p className="text-justify">{item.overview}</p>
-          </div>
-          <div className="col-sm-12 my-2">
-            <iframe
-              width="100%"
-              height="450"
-              src={item.trailer}
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
+          {item.overview && (
+            <div className="col-sm-12 my-2">
+              <h6>Nội dung phim</h6>
+              <p className="text-justify">{item.overview}</p>
+            </div>
+          )}
+          {item.trailer && (
+            <div className="col-sm-12 my-2">
+              <iframe
+                width="100%"
+                height="450"
+                src={item.trailer}
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
         </div>
       </div>
     );

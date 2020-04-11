@@ -1,54 +1,48 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import callApi from "../../utils/apiCaller";
-export default class SignUp extends Component {
+import { Link, Redirect } from "react-router-dom";
+import callApi from "../../../utils/apiCaller";
+class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
       password: "",
-      email: "",
       message: "",
-      checkPassword: ""
+      redirect: false
     };
-    this.onSubmit = this.onSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
   handleInputChange(e) {
-    this.setState({ [e.target.name]: e.target.value, message: "" });
-    if (e.target.name == "password") {
-      if (this.state.password.length < 6) {
-        this.setState({ checkPassword: "Mật khẩu ít nhất 6 ký tự!" });
-      } else {
-        this.setState({ checkPassword: "" });
-      }
-    }
+    this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
     e.preventDefault();
-    let obj = {
-      username: this.state.username,
-      password: this.state.password,
-      email: this.state.email
-    };
-    callApi("users", "post", obj)
-      .then(res => {
-        if (res.data.message) {
-          this.setState({ message: res.data.message });
-        } else {
-          alert("Thêm thành công!");
-        }
-      })
-      .catch(err => console.log(err));
+    // callApi("users/login", "post", this.state).then(res => {
+    //   if (res.data.user) {
+    //     localStorage.setItem("user", res.data.jwt);
+    //     this.setState({ redirect: true });
+    //   } else {
+    //     this.setState({ message: "Sai tên đăng nhập hoặc mật khẩu!" });
+    //   }
+    // });
+    if (this.state.username == "admin") {
+      localStorage.setItem("admin", this.state.password);
+      alert("Đăng nhập thành công!");
+      window.location.href = "/admin";
+      // this.setState({ redirect: true });
+    } else {
+      this.setState({ message: "Sai tên đăng nhập hoặc mật khẩu!" });
+    }
   }
   render() {
     return (
-      <div className="bg-dark " style={{ height: "100%", minHeight: "100vh" }}>
+      <div className="bg-info " style={{ height: "100%", minHeight: "100vh" }}>
         <div
           className="col-lg-5 col-md-8 py-5"
           style={{ margin: "auto", minHeight: "70vh" }}
         >
-          <h3 className="text-center text-white">ĐĂNG KÝ THÀNH VIÊN</h3>
+          <h3 className="text-center text-white">ĐĂNG NHẬP</h3>
           <div
             className="border py-5 bg-white"
             style={{
@@ -81,24 +75,6 @@ export default class SignUp extends Component {
                 />
                 <span className="text-danger">&nbsp;(*)</span>
               </div>
-              <div className="col-sm-12 mb-3">
-                {this.state.checkPassword && (
-                  <small className="text-danger">
-                    {this.state.checkPassword}
-                  </small>
-                )}
-              </div>
-              <div className="d-flex col-sm-12 mb-3">
-                <input
-                  type="email"
-                  className="form-control form-control-md"
-                  placeholder="Nhập email"
-                  required
-                  name="email"
-                  onChange={this.handleInputChange}
-                />
-                <span className="text-danger">&nbsp;(*)</span>
-              </div>
               <div className="d-flex col-sm-12 mb-3">
                 {this.state.message && (
                   <small className="text-danger">{this.state.message}</small>
@@ -106,7 +82,7 @@ export default class SignUp extends Component {
               </div>
               <div className="my-3 text-center">
                 <button className="btn btn-success mx-1" type="submit">
-                  Đăng ký
+                  Đăng nhập
                 </button>
                 <Link to="/">
                   <button className="btn btn-danger mx-1">Trở về</button>
@@ -119,3 +95,5 @@ export default class SignUp extends Component {
     );
   }
 }
+
+export default SignIn;

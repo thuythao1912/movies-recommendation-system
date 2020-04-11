@@ -18,8 +18,7 @@ class AddForm extends Component {
       type: "",
       trailer: "",
       poster: "",
-      checkboxGenres: [],
-      selectedGenres: []
+      checkboxGenres: []
     };
     this.getDropdownCountries = this.getDropdownCountries.bind(this);
     this.getCheckboxGenres = this.getCheckboxGenres.bind(this);
@@ -104,26 +103,33 @@ class AddForm extends Component {
                   .catch(err => console.log(err));
               }
             });
-            //add data to train
+
+            // add data to train
             let model = {
-              isTinhCam: false,
-              isVienTuong: false,
-              isHanhDong: false,
-              isHaiHuoc: false,
-              isCoTrang: false,
-              isHoatHinh: false,
-              isTaiLieu: false,
-              isHinhSu: false,
-              isKinhDi: false,
+              genres: [],
+              // isTinhCam: false,
+              // isVienTuong: false,
+              // isHanhDong: false,
+              // isHaiHuoc: false,
+              // isCoTrang: false,
+              // isHoatHinh: false,
+              // isTaiLieu: false,
+              // isHinhSu: false,
+              // isKinhDi: false,
               country: this.state.country,
               type: this.state.type,
-              year: this.state.year,
+              // year: this.state.year,
               movieId: res.data._id,
               movieName: this.state.vietnameseTitle
             };
-            for (let i = 0; i < this.state.genres.length; i++) {
-              model[Object.keys(model)[i]] = this.state.genres[i].isChecked;
-            }
+            // for (let i = 0; i < this.state.genres.length; i++) {
+            //   model[Object.keys(model)[i]] = this.state.genres[i].isChecked;
+            // }
+            this.state.genres.forEach(genre => {
+              if (genre.isChecked) {
+                model.genres.push(genre.name);
+              }
+            });
             callApi("train", "post", model)
               .then(res => console.log(res.data))
               .catch(err => console.log(err));
@@ -253,7 +259,7 @@ class AddForm extends Component {
                     <option value="-1">Chọn quốc gia</option>
                     {elCountries}
                   </select>
-                  <span className="text-danger">&nbsp;(*)</span>
+                  {/* <span className="text-danger">&nbsp;(*)</span> */}
                 </div>
               </div>
               {/* Loại phim */}
@@ -270,7 +276,7 @@ class AddForm extends Component {
                     <option value="PhimLe">Phim lẻ</option>
                     <option value="PhimBo">Phim bộ</option>
                   </select>
-                  <span className="text-danger">&nbsp;(*)</span>
+                  {/* <span className="text-danger">&nbsp;(*)</span> */}
                 </div>
               </div>
               {/* Thời lượng */}

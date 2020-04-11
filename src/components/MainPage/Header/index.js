@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchButton from "./SearchButton";
 import callApi from "../../../utils/apiCaller";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import Avatar from "react-avatar";
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -65,11 +66,11 @@ class Header extends Component {
                 Trang chủ
               </Link>
             </li>
-            {/* <li className="nav-item px-1">
+            <li className="nav-item px-1">
               <Link to="/admin" className="nav-link header-item">
                 Admin
               </Link>
-            </li> */}
+            </li>
             {this.state.isDisplayMenuItem && (
               <li className="nav-item px-1">
                 <Link to="/sign-up" className="nav-link header-item">
@@ -95,10 +96,13 @@ class Header extends Component {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  className="text-info mx-2"
-                  size="2x"
+                <Avatar
+                  name={this.state.user.username}
+                  size={30}
+                  round="20px"
+                  color="#DE4150"
+                  className="mr-1"
+                  textSizeRatio={2}
                 />
                 {this.state.user.username}
               </span>
